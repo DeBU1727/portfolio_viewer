@@ -42,7 +42,7 @@ function App() {
 
     // ResizeObserver to handle dynamic height changes (e.g. data loading)
     const resizeObserver = new ResizeObserver(() => {
-      lenis.update();
+      if (lenis) lenis.update();
     });
 
     if (contentRef.current) {

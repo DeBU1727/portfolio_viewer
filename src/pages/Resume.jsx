@@ -16,7 +16,7 @@ export default function Resume() {
           fetch(`${API_BASE_URL}/experience`),
           fetch(`${API_BASE_URL}/education`),
           fetch(`${API_BASE_URL}/skills`),
-          fetch(`${API_BASE_URL}/profile?t=${Date.now()}`)
+          fetch(`${API_BASE_URL}/portfolio-profile?t=${Date.now()}`)
         ]);
 
         const expData = await expRes.json();
@@ -41,11 +41,11 @@ export default function Resume() {
   }, []);
 
   const viewUrl = profile?.resumeUrl
-    ? `${API_BASE_URL}/profile/resume/view`
+    ? `${API_BASE_URL}/portfolio-profile/resume/view`
     : '#';
 
   const downloadUrl = profile?.resumeUrl
-    ? `${API_BASE_URL}/profile/resume/download`
+    ? `${API_BASE_URL}/portfolio-profile/resume/download`
     : '#';
 
   return (
