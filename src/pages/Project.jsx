@@ -76,7 +76,18 @@ export default function Project() {
                     <a href={project.githubUrl} target="_blank" rel="noopener noreferrer" className="pill-button border border-neutral-800 hover:bg-white hover:text-black hover:border-white text-xs px-4 py-1 transition-all">GitHub ↗</a>
                   )}
                 </div>
-                <p className="text-neutral-400 mt-4 line-clamp-2 text-sm leading-relaxed">{project.description}</p>
+                <p className="text-neutral-400 mt-4 text-sm leading-relaxed mb-4">{project.description}</p>
+                
+                {project.techStack && (
+                  <div className="flex flex-wrap gap-x-3 gap-y-2 pt-4 border-t border-neutral-900">
+                    {project.techStack.split(',').map((tech, i) => (
+                      <span key={i} className="text-[10px] font-bold uppercase tracking-widest text-neutral-500 hover:text-white transition-colors cursor-default">
+                        {tech.trim()}
+                        {i < project.techStack.split(',').length - 1 && <span className="ml-2 text-neutral-800">•</span>}
+                      </span>
+                    ))}
+                  </div>
+                )}
               </div>
             ))}
           </div>
