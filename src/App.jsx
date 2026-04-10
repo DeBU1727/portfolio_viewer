@@ -41,8 +41,9 @@ function App() {
     lenisRef.current = lenis;
 
     // ResizeObserver to handle dynamic height changes (e.g. data loading)
+    // ResizeObserver to handle dynamic height changes (e.g. data loading)
     const resizeObserver = new ResizeObserver(() => {
-      lenisRef.current?.update();
+      window.dispatchEvent(new Event('resize'));
     });
 
     if (contentRef.current) {
