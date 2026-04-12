@@ -22,6 +22,27 @@ function App() {
   const contentRef = useRef(null);
   const lenisRef = useRef(null);
 
+  // Robust lock management: Reset isManualScroll on user intervention
+  useEffect(() => {
+    const handleManualIntervention = () => {
+      if (isManualScroll.current) {
+        isManualScroll.current = false;
+        if (timeoutRef.current) {
+          clearTimeout(timeoutRef.current);
+          timeoutRef.current = null;
+        }
+      }
+    };
+
+    window.addEventListener('wheel', handleManualIntervention, { passive: true });
+    window.addEventListener('touchmove', handleManualIntervention, { passive: true });
+    
+    return () => {
+      window.removeEventListener('wheel', handleManualIntervention);
+      window.removeEventListener('touchmove', handleManualIntervention);
+    };
+  }, []);
+
   useEffect(() => {
     // Initialize Lenis with refined "liquid" settings
     const lenis = new Lenis({
@@ -107,6 +128,9 @@ function App() {
   const scrollToSection = (id) => {
     const element = document.getElementById(id);
     if (element && lenisRef.current) {
+      // Clear any existing safety timeout
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+
       isManualScroll.current = true;
       
       setPrevActiveSection(activeSection);
@@ -117,8 +141,15 @@ function App() {
         easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
         onComplete: () => {
           isManualScroll.current = false;
+          timeoutRef.current = null;
         }
       });
+
+      // Safety fallback: ensure lock is released after 2.5s regardless of onComplete
+      timeoutRef.current = setTimeout(() => {
+        isManualScroll.current = false;
+        timeoutRef.current = null;
+      }, 2500);
     }
   };
 
